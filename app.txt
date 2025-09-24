@@ -1,0 +1,10 @@
+
+
+1 listar dados do usuario;
+2 listar os dados particulares do usuario, sem contatos;
+3 listar dados dos contatos de cada usuario;
+4 listar todas as mensagens de usuarios;
+5 listar uma conversa de um usuário entre um contato;
+6 Realizar um filtro como "pesquisa de palavra chave" 
+com base em uma palavra nas conversas do usuário e 
+do respectivo contato
