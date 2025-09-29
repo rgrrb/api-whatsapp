@@ -21,7 +21,7 @@ const MESSAGE_ERROR = {
 
 }
 
-const getAllusersData = () => {
+const getAllUsersData = () => {
 
     let message = {
 
@@ -38,7 +38,7 @@ const getAllusersData = () => {
 
 }
 
-const getSpecifyDataOfUser = (number) => {
+const getSpecifyUserData = (number) => {
 
     let message = {
 
@@ -53,7 +53,7 @@ const getSpecifyDataOfUser = (number) => {
 
     delete info.contacts
     message.userInfo.push(info)
-    
+
     return message
 }
 const getUserContactsInfo = (number) => {
@@ -63,34 +63,35 @@ const getUserContactsInfo = (number) => {
         "status": true,
         "statuscode": 200,
         "developer": "Roger Ribeiro de Oliveira",
-        "contactsOwnerInfo": [],
+        "userInfo": [],
 
     }
 
     let contacts = users
     let contactsOwner = contacts.find(user => user.number === number)
     let ownerContacts = contactsOwner['contacts']
-    
-    let ownerInfo = {
+
+    let userInfo = {
         "id": contactsOwner.id,
         "number": contactsOwner.number,
         "nome": contactsOwner.account,
         "contacts": []
-        }
+    }
 
     ownerContacts.forEach(function (ownerContacts) {
         let contactsInfo = {
             "name": ownerContacts.name,
             "number": ownerContacts.number,
             "description": ownerContacts.description,
-            "image": ownerContacts.image
-            
+            "image": ownerContacts.image,
+
+
         }
-        ownerInfo.contacts.push(contactsInfo)
+        userInfo.contacts.push(contactsInfo)
     })
 
-    message.contactsOwnerInfo.push(ownerInfo)
-    
+    message.userInfo.push(userInfo)
+
     return message
 
 }
@@ -101,27 +102,34 @@ const getAllMessagesFromUserNumber = (number) => {
         "status": true,
         "statuscode": 200,
         "developer": "Roger Ribeiro de Oliveira",
-        "contentOwnerID": "",
-        "messages": []
+        "userInfo": ""
+
 
     }
 
     let contacts = users
     let contactsOwner = contacts.find(user => user.number === number)
     let ownerContacts = contactsOwner['contacts']
-    
+
+    let userInfo = {
+        "id": contactsOwner.id,
+        "number": contactsOwner.number,
+        "nome": contactsOwner.account,
+        "messagesExchanged": []
+    }
+
     ownerContacts.forEach(function (ownerContacts) {
         let contactsInfo = {
             "name": ownerContacts.name,
             "number": ownerContacts.number,
             "messages": ownerContacts.messages
-            
+
         }
-        message.messages.push(contactsInfo)
+        userInfo.messagesExchanged.push(contactsInfo)
     })
 
-    message.contentOwnerID = contactsOwner.id
-    
+    message.userInfo = userInfo
+
     return message
 
 }
@@ -132,15 +140,39 @@ const getMessagesBetweenUserAndContacts = (number, contact) => {
 
         "status": true,
         "statuscode": 200,
-        "developer": "Roger Ribeiro de Oliveira",
-        "contentOwnerID": "",
-        "messages": []
+        "developer": "Roger Ribeiro de Oliveira"
 
     }
 
-    let ownerMessages = getAllMessagesFromUserNumber(number)
-    //const exchangedMessages = ownerMessages.find(messages => )
-    return ownerMessages
+    message.userInfo = getAllMessagesFromUserNumber(number).userInfo
+    delete message.userInfo.messagesExchanged
+    let ownerMessages = getAllMessagesFromUserNumber(number).userInfo.messagesExchanged
+    let exchangedMessages = ownerMessages.find(messages => messages.number === contact)
+    message.userInfo.exchangedMessages = exchangedMessages
+
+    return message
+}
+const getMessagesByKeyword = (number, contact, keyword) => {
+
+    let message = {
+
+        "status": true,
+        "statuscode": 200,
+        "developer": "Roger Ribeiro de Oliveira"
+
+    }
+
+    message.userInfo = getAllMessagesFromUserNumber(number).userInfo
+
+    let messagesBetweenUserAndContact = getMessagesBetweenUserAndContacts(number, contact).userInfo.exchangedMessages
+
+    let result = messagesBetweenUserAndContact.messages.forEach(function(){
+        let batata = 0
+        console.log(messagesBetweenUserAndContact.messages[0])
+        batata++
+    })
+
+
 }
 
-console.log(getUserContactsInfo("11987876567"))
+// console.log(JSON.stringify(getMessagesByKeyword("11987876567", "26999999963", "great"), null, 2))
