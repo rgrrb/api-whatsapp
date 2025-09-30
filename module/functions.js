@@ -30,8 +30,8 @@ const getAllUsersData = () => {
         "users": []
 
     }
-
-    message.users = users
+    let usersList = JSON.parse(JSON.stringify(users))
+    message.users = usersList
 
     if (message.users.length > 0)
         return message
