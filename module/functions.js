@@ -7,11 +7,10 @@
  * 
 *************************/
 
+const { json } = require('body-parser')
 const list = require('./contatos.js')
 
 const users = list.contatos['whats-users']
-
-const usersContacts = users[0].contacts
 
 const MESSAGE_ERROR = {
 
@@ -51,8 +50,8 @@ const getSpecifyUserData = (number) => {
         "userInfo": []
 
     }
-
-    let info = users.find(info => info.number === number)
+    let usersList = JSON.parse(JSON.stringify(users))
+    let info = usersList.find(info => info.number === number)
     if(!info)
        return MESSAGE_ERROR
 
