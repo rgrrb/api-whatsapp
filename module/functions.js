@@ -203,12 +203,12 @@ const getMessagesByKeyword = (number, contact, keyword) => {
         return MESSAGE_ERROR
     
     let content = messagesBetweenUserAndContact.messages.filter(messages => messages.content.toLowerCase().includes(keyword.toLowerCase()))
-
+    message.userInfo.contact = messagesBetweenUserAndContact
+    delete message.userInfo.contact.messages
     delete message.userInfo.messagesExchanged
+    message.userInfo.contact.messagesFound = content
 
-    message.userInfo.messagesFound = content
-
-    if (message.userInfo.messagesFound.length <= 0)
+    if (message.userInfo.contact.messagesFound.length <= 0)
         return MESSAGE_ERROR
     else
         return message
