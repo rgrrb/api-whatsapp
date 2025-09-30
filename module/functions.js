@@ -76,6 +76,8 @@ const getUserContactsInfo = (number) => {
     let usersList = JSON.parse(JSON.stringify(users))
     let contacts = usersList
     let contactsOwner = contacts.find(user => user.number === number)
+    if(!contactsOwner)
+        return MESSAGE_ERROR
     let ownerContacts = contactsOwner['contacts']
     if(!ownerContacts)
         return MESSAGE_ERROR
