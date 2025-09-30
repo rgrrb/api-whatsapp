@@ -184,7 +184,7 @@ const getMessagesBetweenUserAndContacts = (number, contact) => {
         return MESSAGE_ERROR
 }
 const getMessagesByKeyword = (number, contact, keyword) => {
-    console.log(number, contact, keyword)
+
     let message = {
 
         "status": true,
