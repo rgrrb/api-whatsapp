@@ -165,14 +165,14 @@ const getMessagesByKeyword = (number, contact, keyword) => {
     message.userInfo = getAllMessagesFromUserNumber(number).userInfo
 
     let messagesBetweenUserAndContact = getMessagesBetweenUserAndContacts(number, contact).userInfo.exchangedMessages
+    
+    let content = messagesBetweenUserAndContact.messages.filter(messages => messages.content.includes(keyword))
 
-    let result = messagesBetweenUserAndContact.messages.forEach(function(){
-        let batata = 0
-        console.log(messagesBetweenUserAndContact.messages[0])
-        batata++
-    })
+    delete message.userInfo.messagesExchanged
 
+    message.userInfo.messagesFound = content
 
+    return message
+    
 }
-
-// console.log(JSON.stringify(getMessagesByKeyword("11987876567", "26999999963", "great"), null, 2))
+console.log(JSON.stringify(getMessagesByKeyword("11987876567", "26999999963", "Great"), null, 2))
