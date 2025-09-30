@@ -34,7 +34,10 @@ const getAllUsersData = () => {
 
     message.users = users
 
-    return message
+    if (message.users.length > 0)
+        return message
+    else
+        return MESSAGE_ERROR
 
 }
 
@@ -50,11 +53,16 @@ const getSpecifyUserData = (number) => {
     }
 
     let info = users.find(info => info.number === number)
+    if(!info)
+       return MESSAGE_ERROR
 
     delete info.contacts
     message.userInfo.push(info)
 
-    return message
+    if (message.userInfo.push(info))
+        return message
+    else
+        return MESSAGE_ERROR
 }
 const getUserContactsInfo = (number) => {
 
@@ -70,6 +78,8 @@ const getUserContactsInfo = (number) => {
     let contacts = users
     let contactsOwner = contacts.find(user => user.number === number)
     let ownerContacts = contactsOwner['contacts']
+    if(!ownerContacts)
+        return MESSAGE_ERROR
 
     let userInfo = {
         "id": contactsOwner.id,
@@ -92,7 +102,10 @@ const getUserContactsInfo = (number) => {
 
     message.userInfo.push(userInfo)
 
-    return message
+    if (contacts.length > 0)
+        return message
+    else
+        return MESSAGE_ERROR
 
 }
 const getAllMessagesFromUserNumber = (number) => {
@@ -109,7 +122,11 @@ const getAllMessagesFromUserNumber = (number) => {
 
     let contacts = users
     let contactsOwner = contacts.find(user => user.number === number)
+    if(!contactsOwner)
+        return MESSAGE_ERROR
+    
     let ownerContacts = contactsOwner['contacts']
+    
 
     let userInfo = {
         "id": contactsOwner.id,
@@ -130,7 +147,10 @@ const getAllMessagesFromUserNumber = (number) => {
 
     message.userInfo = userInfo
 
-    return message
+    if (contacts.length > 0)
+        return message
+    else
+        return MESSAGE_ERROR
 
 }
 
@@ -145,15 +165,27 @@ const getMessagesBetweenUserAndContacts = (number, contact) => {
     }
 
     message.userInfo = getAllMessagesFromUserNumber(number).userInfo
+    
+    if (!message.userInfo)
+        return MESSAGE_ERROR
+
     delete message.userInfo.messagesExchanged
+
     let ownerMessages = getAllMessagesFromUserNumber(number).userInfo.messagesExchanged
+    
+    if (!ownerMessages)
+        return MESSAGE_ERROR
+
     let exchangedMessages = ownerMessages.find(messages => messages.number === contact)
     message.userInfo.exchangedMessages = exchangedMessages
 
-    return message
+    if (message.userInfo)
+        return message
+    else
+        return MESSAGE_ERROR
 }
 const getMessagesByKeyword = (number, contact, keyword) => {
-
+    console.log(number, contact, keyword)
     let message = {
 
         "status": true,
@@ -163,16 +195,31 @@ const getMessagesByKeyword = (number, contact, keyword) => {
     }
 
     message.userInfo = getAllMessagesFromUserNumber(number).userInfo
+    if(!message.userInfo)
+        return MESSAGE_ERROR
 
     let messagesBetweenUserAndContact = getMessagesBetweenUserAndContacts(number, contact).userInfo.exchangedMessages
+    if(!messagesBetweenUserAndContact)
+        return MESSAGE_ERROR
     
-    let content = messagesBetweenUserAndContact.messages.filter(messages => messages.content.includes(keyword))
+    let content = messagesBetweenUserAndContact.messages.filter(messages => messages.content.toLowerCase().includes(keyword.toLowerCase()))
 
     delete message.userInfo.messagesExchanged
 
     message.userInfo.messagesFound = content
 
-    return message
-    
+    if (message.userInfo.messagesFound.length <= 0)
+        return MESSAGE_ERROR
+    else
+        return message
+
 }
-console.log(JSON.stringify(getMessagesByKeyword("11987876567", "26999999963", "Great"), null, 2))
+
+module.exports = {
+    getAllUsersData,
+    getSpecifyUserData,
+    getUserContactsInfo,
+    getAllMessagesFromUserNumber,
+    getMessagesBetweenUserAndContacts,
+    getMessagesByKeyword
+}
