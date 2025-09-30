@@ -73,8 +73,8 @@ const getUserContactsInfo = (number) => {
         "userInfo": [],
 
     }
-
-    let contacts = users
+    let usersList = JSON.parse(JSON.stringify(users))
+    let contacts = usersList
     let contactsOwner = contacts.find(user => user.number === number)
     let ownerContacts = contactsOwner['contacts']
     if(!ownerContacts)
@@ -118,8 +118,8 @@ const getAllMessagesFromUserNumber = (number) => {
 
 
     }
-
-    let contacts = users
+    let usersList = JSON.parse(JSON.stringify(users))
+    let contacts = usersList
     let contactsOwner = contacts.find(user => user.number === number)
     if(!contactsOwner)
         return MESSAGE_ERROR
